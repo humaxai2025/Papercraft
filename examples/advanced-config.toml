@@ -1,0 +1,91 @@
+# Advanced PaperCraft Configuration
+# Enables all advanced features for comprehensive testing
+
+[output]
+format = "pdf"
+quality = 1.0
+compression = true
+
+[page]
+orientation = "portrait"
+
+[page.size]
+preset = "A4"
+
+[page.margins]
+top = "1in"
+right = "1in"
+bottom = "1in"
+left = "1in"
+
+[page.header]
+enabled = true
+template = '''<div style="text-align: center; font-size: 10pt; color: #666;">Advanced Features Test Document</div>'''
+height = "0.75in"
+font_size = "10pt"
+
+[page.footer]
+enabled = true
+template = '''<div style="display: flex; justify-content: space-between; font-size: 9pt; color: #666;">
+<span>PaperCraft v1.0.0</span>
+<span>Page <span class="pageNumber"></span> of <span class="totalPages"></span></span>
+</div>'''
+height = "0.75in"
+font_size = "9pt"
+
+[theme]
+built_in = "academic"
+
+[fonts]
+family = "Times New Roman, serif"
+size = "11pt"
+line_height = 1.8
+
+# Table of Contents Configuration
+[toc]
+enabled = true
+title = "Table of Contents"
+max_depth = 4
+page_numbers = true
+links = true
+style = "numbered"
+
+# Image Processing Configuration
+[images]
+optimization = true
+max_width = 800
+max_height = 600
+quality = 90
+
+# Enhanced Code Block Configuration
+[code]
+line_numbers = true
+highlight_theme = "github"
+word_wrap = false
+show_language = true
+copy_button = false
+
+# References Configuration
+[references]
+cross_references = true
+
+[references.footnotes]
+enabled = true
+style = "bottom"
+numbering = "numeric"
+
+[references.bibliography]
+enabled = true
+style = "apa"
+title = "References"
+sort_by = "author"
+
+# Custom styles for advanced features
+[theme.custom_styles]
+".footnote-ref" = "color: #2563eb; font-weight: 500;"
+".cross-ref" = "color: #059669; font-weight: 500;"
+".citation" = "color: #dc2626; font-weight: 500;"
+".code-header" = "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;"
+".toc" = "background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); border: 2px solid #4a5568;"
+"h1" = "color: #2d3748; border-bottom: 3px solid #4299e1;"
+"h2" = "color: #4a5568; border-bottom: 2px solid #63b3ed;"

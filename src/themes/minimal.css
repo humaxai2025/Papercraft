@@ -1,0 +1,174 @@
+/* Minimal theme for Markdown to PDF conversion */
+
+:root {
+    --font-family-serif: Georgia, "Times New Roman", Times, serif;
+    --font-family-mono: "Courier New", Courier, monospace;
+    --color-text: #333333;
+    --color-bg: #ffffff;
+    --color-border: #cccccc;
+    --color-link: #0066cc;
+    --color-pre-bg: #f8f8f8;
+    --color-quote-border: #dddddd;
+    --color-quote-text: #666666;
+}
+
+body {
+    font-family: var(--font-family-serif);
+    line-height: 1.8;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    margin: 0;
+    padding: 3em;
+    font-size: 14px;
+    max-width: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 2em;
+    margin-bottom: 1em;
+    font-weight: normal;
+    line-height: 1.2;
+    font-family: var(--font-family-serif);
+}
+
+h1 { 
+    font-size: 1.8em; 
+    text-align: center;
+    border-bottom: none;
+    margin-bottom: 2em;
+}
+h2 { 
+    font-size: 1.4em; 
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 0.3em;
+}
+h3 { font-size: 1.2em; }
+h4 { font-size: 1.1em; }
+h5 { font-size: 1em; font-weight: bold; }
+h6 { font-size: 1em; font-style: italic; }
+
+p {
+    margin-top: 0;
+    margin-bottom: 1em;
+    text-align: justify;
+}
+
+a {
+    color: var(--color-link);
+    text-decoration: underline;
+}
+
+ul, ol {
+    padding-left: 2em;
+    margin-top: 0;
+    margin-bottom: 1em;
+}
+
+li {
+    margin-bottom: 0.5em;
+}
+
+li > p {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+}
+
+blockquote {
+    margin: 1em 0;
+    padding: 0 2em;
+    color: var(--color-quote-text);
+    border-left: 3px solid var(--color-quote-border);
+    font-style: italic;
+}
+
+code {
+    font-family: var(--font-family-mono);
+    font-size: 0.9em;
+    padding: 2px 4px;
+    background-color: var(--color-pre-bg);
+    border-radius: 2px;
+}
+
+pre {
+    font-family: var(--font-family-mono);
+    font-size: 0.85em;
+    line-height: 1.4;
+    padding: 1em;
+    overflow: auto;
+    background-color: var(--color-pre-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
+    margin: 1em 0;
+}
+
+pre > code {
+    padding: 0;
+    background: transparent;
+    border: 0;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+    font-size: 0.9em;
+}
+
+th, td {
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    text-align: left;
+}
+
+th {
+    background-color: var(--color-pre-bg);
+    font-weight: bold;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1em auto;
+}
+
+hr {
+    height: 1px;
+    border: none;
+    background-color: var(--color-border);
+    margin: 2em 0;
+}
+
+/* Minimal page breaks */
+.page-break-before {
+    page-break-before: always;
+}
+
+.no-break {
+    page-break-inside: avoid;
+}
+
+/* Task lists */
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item input {
+    margin: 0 0.5em 0 -1.5em;
+}
+
+/* Simple math styling */
+.math-display {
+    text-align: center;
+    margin: 1em 0;
+}
+
+.math-inline {
+    /* No special styling for inline math in minimal theme */
+}
+
+/* Simple mermaid styling */
+.mermaid {
+    text-align: center;
+    margin: 1em 0;
+}

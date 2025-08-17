@@ -1,0 +1,31 @@
+# PaperCraft auto-discovery config
+[output]
+format = "pdf"
+quality = 1.0
+compression = true
+
+[theme]
+built_in = "academic"
+
+[page]
+orientation = "portrait"
+
+[page.size]
+preset = "Letter"
+
+[page.margins]
+top = "1in"
+right = "1in"
+bottom = "1in"
+left = "1in"
+
+[page.page_numbers]
+enabled = true
+format = "Page {page}"
+position = "footer"
+start_from = 1
+
+[fonts]
+family = "Times New Roman, serif"
+size = "12pt"
+line_height = 1.8

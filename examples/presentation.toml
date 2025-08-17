@@ -1,0 +1,45 @@
+# Presentation/slides configuration
+
+[output]
+format = "pdf"
+quality = 1.0
+compression = true
+
+[page]
+orientation = "landscape"
+
+[page.size]
+preset = "A4"
+
+[page.margins]
+top = "1cm"
+right = "1cm"
+bottom = "1cm"
+left = "1cm"
+
+[page.footer]
+enabled = true
+template = '''
+<div style="display: flex; justify-content: space-between; width: 100%;">
+  <span>Company Confidential</span>
+  <span>Page <span class="pageNumber"></span></span>
+</div>
+'''
+height = "1cm"
+font_size = "9pt"
+
+[theme]
+built_in = "modern"
+
+[fonts]
+family = "Helvetica, Arial, sans-serif"
+size = "16pt"
+line_height = 1.4
+
+[theme.custom_styles]
+"h1" = "page-break-before: always; text-align: center; font-size: 2.5em; margin-bottom: 2em;"
+"h2" = "font-size: 2em; margin-top: 2em;"
+"h3" = "font-size: 1.5em; margin-top: 1.5em;"
+"body" = "font-size: 16pt;"
+"ul" = "font-size: 1.1em; line-height: 1.6;"
+"pre" = "font-size: 14pt;"

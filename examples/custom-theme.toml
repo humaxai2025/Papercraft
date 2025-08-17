@@ -1,0 +1,38 @@
+# Custom theme configuration demonstrating external CSS
+
+[output]
+format = "pdf"
+quality = 1.0
+compression = true
+
+[page]
+orientation = "portrait"
+
+[page.size]
+preset = "A4"
+
+[page.margins]
+top = "1.5cm"
+right = "1.5cm"
+bottom = "1.5cm"
+left = "1.5cm"
+
+[page.page_numbers]
+enabled = true
+format = "- {page} -"
+position = "footer"
+start_from = 1
+
+[theme]
+css_file = "themes/custom-corporate.css"
+
+[fonts]
+family = "Georgia, serif"
+size = "11pt"
+line_height = 1.8
+
+# Additional custom styles to override theme
+[theme.custom_styles]
+"h1" = "color: #1a365d; border-bottom: 3px solid #3182ce;"
+"h2" = "color: #2d3748; border-bottom: 1px solid #e2e8f0;"
+"blockquote" = "background-color: #f7fafc; border-left: 4px solid #3182ce; padding: 1em;"

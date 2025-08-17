@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cargo build:*)",
+      "Bash(./target/release/md-to-pdf.exe:*)",
+      "Bash(cargo check:*)",
+      "Bash(cargo clippy:*)",
+      "Bash(cargo run:*)",
+      "Bash(.targetreleasemd-to-pdf.exe --input advanced-test.md --output release-test.pdf)",
+      "Bash(rustc:*)",
+      "Bash(./debug-syntaxes.exe)",
+      "Bash(mkdir:*)",
+      "Bash(copy:*)",
+      "Bash(cp:*)",
+      "Bash(cargo test)",
+      "Bash(mv:*)",
+      "Bash(./target/release/papercraft.exe:*)",
+      "Bash(find:*)",
+      "Bash(timeout:*)",
+      "Bash(.targetreleasepapercraft.exe --input test-batch --output release-test-output --batch)",
+      "Bash(rm:*)",
+      "WebFetch(domain:www.rust-lang.org)",
+      "WebFetch(domain:github.githubassets.com)",
+      "WebSearch",
+      "WebFetch(domain:googlechromelabs.github.io)"
+    ],
+    "deny": [],
+    "ask": [],
+    "defaultMode": "acceptEdits"
+  }
+}

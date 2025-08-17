@@ -1,0 +1,51 @@
+# Academic paper configuration for PaperCraft
+
+[output]
+format = "pdf"
+quality = 1.0
+compression = false
+
+[page]
+orientation = "portrait"
+
+[page.size]
+preset = "Letter"
+
+[page.margins]
+top = "1in"
+right = "1in"
+bottom = "1in" 
+left = "1in"
+
+[page.header]
+enabled = true
+template = '''<span class="title"></span>'''
+height = "0.75in"
+font_size = "10pt"
+
+[page.footer]
+enabled = true
+template = '''<span class="pageNumber"></span>'''
+height = "0.75in"
+font_size = "10pt"
+
+[page.page_numbers]
+enabled = false  # Using custom footer instead
+format = "Page {page} of {total}"
+position = "footer"
+start_from = 1
+
+[theme]
+built_in = "academic"
+
+[fonts]
+family = "Times New Roman, serif"
+size = "12pt"
+line_height = 2.0
+
+# Custom styles for academic formatting
+[theme.custom_styles]
+"body" = "text-align: justify; text-indent: 0.5in;"
+"h1" = "text-align: center; page-break-before: always;"
+"blockquote" = "margin: 1em 2em; font-style: italic;"
+".abstract" = "margin: 2em; font-size: 11pt; text-align: justify;"

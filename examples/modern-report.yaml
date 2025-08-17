@@ -1,0 +1,45 @@
+# Modern report configuration for PaperCraft
+
+output:
+  format: pdf
+  quality: 1.0
+  compression: true
+
+page:
+  orientation: portrait
+  size:
+    preset: A4
+  margins:
+    top: "2cm"
+    right: "2cm"
+    bottom: "2cm"
+    left: "2cm"
+  
+  header:
+    enabled: true
+    template: '<div style="border-bottom: 2px solid #2563eb; padding-bottom: 0.5em;"><span class="title"></span> - <span class="date"></span></div>'
+    height: "1.5cm"
+    font_size: "11pt"
+  
+  page_numbers:
+    enabled: true
+    format: "{page} / {total}"
+    position: footer
+    start_from: 1
+
+theme:
+  built_in: modern
+
+fonts:
+  family: "Inter, Arial, sans-serif"
+  size: "14pt"
+  line_height: 1.7
+  custom_fonts:
+    - name: "Inter"
+      path: "fonts/Inter-Regular.woff2"
+      weight: "400"
+      style: "normal"
+    - name: "Inter"
+      path: "fonts/Inter-SemiBold.woff2"
+      weight: "600"
+      style: "normal"
