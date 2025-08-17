@@ -21,6 +21,7 @@ mod markdown_validator;
 mod config_wizard;
 mod dry_run;
 mod chrome_manager;
+mod docx_converter;
 
 use html_converter::{ConversionOptions, HtmlToPdfConverter};
 use config::Config;
@@ -35,6 +36,7 @@ use logger::{Logger, LogLevel};
 use markdown_validator::MarkdownValidator;
 use config_wizard::ConfigWizard;
 use dry_run::DryRunProcessor;
+use docx_converter::DocxConverter;
 
 #[derive(Parser, Debug)]
 #[command(
@@ -62,6 +64,10 @@ struct Args {
     /// Path to configuration file (TOML, YAML, JSON)
     #[arg(short, long, value_name = "FILE")]
     config: Option<PathBuf>,
+
+    /// Output format (pdf, docx)
+    #[arg(long, default_value = "pdf")]
+    format: String,
 
     /// Built-in theme to use (default, dark, minimal, academic, modern)
     #[arg(long)]
@@ -349,7 +355,7 @@ fn main() -> Result<()> {
     };
 
     if args.watch {
-        watch_directory(input, output, &converter, options)?;
+        watch_directory(input, output, &converter, options, &args.format)?;
     } else if args.dry_run {
         run_dry_run_analysis(input, output, &options.config, &args, should_validate)?;
     } else if args.batch || input.is_dir() {
@@ -363,7 +369,7 @@ fn main() -> Result<()> {
             Logger::verbose("Pre-conversion validation enabled");
             validate_single_file(input)?;
         }
-        single_file_conversion(input, output, &converter, options, &error_reporter)?;
+        single_file_conversion(input, output, &converter, options, &error_reporter, &args.format)?;
     }
 
     Ok(())
@@ -607,6 +613,7 @@ fn single_file_conversion(
     converter: &HtmlToPdfConverter,
     options: ConversionOptions,
     error_reporter: &ErrorReporter,
+    format: &str,
 ) -> Result<()> {
     // Validate input file
     if let Err(e) = error_handler::validate_input_file(input) {
@@ -614,9 +621,10 @@ fn single_file_conversion(
         return Err(anyhow::anyhow!("Input validation failed"));
     }
 
-    println!("📄 Converting: {} → {}", 
+    println!("📄 Converting: {} → {} ({})", 
         input.file_name().map(|n| n.to_string_lossy()).unwrap_or_else(|| "unknown".into()), 
-        output.file_name().map(|n| n.to_string_lossy()).unwrap_or_else(|| "unknown".into()));
+        output.file_name().map(|n| n.to_string_lossy()).unwrap_or_else(|| "unknown".into()),
+        format.to_uppercase());
     
     // Initialize progress for single file
     #[allow(unused_mut)]
@@ -629,7 +637,15 @@ fn single_file_conversion(
 
     progress_tracker.set_file_stage(file_progress.clone(), FileProgressStages::READING, 10);
     
-    let result = converter.convert_file(input, output, options);
+    let result = match format.to_lowercase().as_str() {
+        "docx" => {
+            let docx_converter = DocxConverter::new(options.config.clone());
+            docx_converter.convert_file(input, output)
+        },
+        "pdf" | _ => {
+            converter.convert_file(input, output, options)
+        }
+    };
     
     match result {
         Ok(_) => {
@@ -720,6 +736,7 @@ fn batch_process_directory(
             error_reporter,
             processed_count: &processed_count,
             failed_count: &failed_count,
+            format: &args.format,
         };
         let results: Vec<Result<()>> = file_paths.par_iter().map(|input_path| {
             process_single_file_with_progress(
@@ -738,7 +755,10 @@ fn batch_process_directory(
                     output: output_dir.join(
                         file_paths[i].strip_prefix(input_dir)
                             .unwrap_or(&file_paths[i])
-                    ).with_extension("pdf"),
+                    ).with_extension(match args.format.to_lowercase().as_str() {
+                        "docx" => "docx",
+                        "pdf" | _ => "pdf",
+                    }),
                     reason: e.to_string(),
                 });
             }
@@ -755,6 +775,7 @@ fn batch_process_directory(
             error_reporter,
             processed_count: &processed_count,
             failed_count: &failed_count,
+            format: &args.format,
         };
         for input_path in &file_paths {
             if let Err(e) = process_single_file_with_progress(
@@ -768,7 +789,10 @@ fn batch_process_directory(
                     output: output_dir.join(
                         input_path.strip_prefix(input_dir)
                             .unwrap_or(input_path)
-                    ).with_extension("pdf"),
+                    ).with_extension(match args.format.to_lowercase().as_str() {
+                        "docx" => "docx",
+                        "pdf" | _ => "pdf",
+                    }),
                     reason: e.to_string(),
                 });
             }
@@ -799,6 +823,7 @@ struct ProcessingContext<'a> {
     error_reporter: &'a ErrorReporter,
     processed_count: &'a Arc<Mutex<u32>>,
     failed_count: &'a Arc<Mutex<u32>>,
+    format: &'a str,
 }
 
 fn process_single_file_with_progress(
@@ -810,7 +835,11 @@ fn process_single_file_with_progress(
     let relative_path = input_path.strip_prefix(input_dir)
         .context("Failed to calculate relative path")?;
     
-    let output_file = output_dir.join(relative_path).with_extension("pdf");
+    let output_extension = match ctx.format.to_lowercase().as_str() {
+        "docx" => "docx",
+        "pdf" | _ => "pdf",
+    };
+    let output_file = output_dir.join(relative_path).with_extension(output_extension);
     
     // Validate output path to prevent directory traversal
     if let Err(e) = error_handler::validate_output_path(&output_file, output_dir) {
@@ -843,7 +872,17 @@ fn process_single_file_with_progress(
 
     ctx.progress_tracker.set_file_stage(file_progress.clone(), FileProgressStages::READING, 10);
 
-    match ctx.converter.convert_file(input_path, &output_file, ctx.options.clone()) {
+    let conversion_result = match ctx.format.to_lowercase().as_str() {
+        "docx" => {
+            let docx_converter = DocxConverter::new(ctx.options.config.clone());
+            docx_converter.convert_file(input_path, &output_file)
+        },
+        "pdf" | _ => {
+            ctx.converter.convert_file(input_path, &output_file, ctx.options.clone())
+        }
+    };
+    
+    match conversion_result {
         Ok(_) => {
             ctx.progress_tracker.set_file_stage(file_progress.clone(), FileProgressStages::FINALIZING, 90);
             ctx.resume_handler.update_job_status(ctx.batch_id, &job_id, JobStatus::Completed, 100.0)?;
@@ -882,6 +921,7 @@ fn watch_directory(
     output_dir: &PathBuf,
     converter: &HtmlToPdfConverter,
     options: ConversionOptions,
+    format: &str,
 ) -> Result<()> {
     use std::sync::mpsc::channel;
     use std::thread;
@@ -919,7 +959,11 @@ fn watch_directory(
                             thread::sleep(Duration::from_millis(100));
                             
                             if let Ok(relative_path) = path.strip_prefix(input_dir) {
-                                let output_file = output_dir.join(relative_path).with_extension("pdf");
+                                let output_extension = match format.to_lowercase().as_str() {
+                                    "docx" => "docx",
+                                    "pdf" | _ => "pdf",
+                                };
+                                let output_file = output_dir.join(relative_path).with_extension(output_extension);
                                 
                                 // Create parent directory if needed
                                 if let Some(parent) = output_file.parent() {
@@ -928,7 +972,17 @@ fn watch_directory(
 
                                 println!("🔄 File changed: {} -> {}", path.display(), output_file.display());
 
-                                match converter.convert_file(path, &output_file, options.clone()) {
+                                let conversion_result = match format.to_lowercase().as_str() {
+                                    "docx" => {
+                                        let docx_converter = DocxConverter::new(options.config.clone());
+                                        docx_converter.convert_file(path, &output_file)
+                                    },
+                                    "pdf" | _ => {
+                                        converter.convert_file(path, &output_file, options.clone())
+                                    }
+                                };
+                                
+                                match conversion_result {
                                     Ok(_) => println!("  ✓ Regenerated successfully"),
                                     Err(e) => println!("  ✗ Failed to regenerate: {e}"),
                                 }

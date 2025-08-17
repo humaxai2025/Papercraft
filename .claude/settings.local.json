@@ -22,7 +22,9 @@
       "WebFetch(domain:www.rust-lang.org)",
       "WebFetch(domain:github.githubassets.com)",
       "WebSearch",
-      "WebFetch(domain:googlechromelabs.github.io)"
+      "WebFetch(domain:googlechromelabs.github.io)",
+      "Bash(./target/debug/papercraft.exe:*)",
+      "Bash(cargo test:*)"
     ],
     "deny": [],
     "ask": [],

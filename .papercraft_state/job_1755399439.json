@@ -1,0 +1,37 @@
+{
+  "id": "job_1755399439",
+  "jobs": [
+    {
+      "id": "job_1755399439_0",
+      "input_path": "examples\\advanced-features-test.md",
+      "output_path": "test_output\\advanced-features-test.pdf",
+      "status": "Pending",
+      "created_at": "2025-08-17T02:57:19.303018600Z",
+      "updated_at": "2025-08-17T02:57:19.303018600Z",
+      "progress": 0.0,
+      "error_message": null,
+      "config_hash": "config_hash_placeholder",
+      "estimated_duration_seconds": 10,
+      "actual_duration_seconds": null
+    },
+    {
+      "id": "job_1755399439_1",
+      "input_path": "examples\\comprehensive-test.md",
+      "output_path": "test_output\\comprehensive-test.pdf",
+      "status": "Pending",
+      "created_at": "2025-08-17T02:57:19.303018600Z",
+      "updated_at": "2025-08-17T02:57:19.303018600Z",
+      "progress": 0.0,
+      "error_message": null,
+      "config_hash": "config_hash_placeholder",
+      "estimated_duration_seconds": 10,
+      "actual_duration_seconds": null
+    }
+  ],
+  "total_files": 2,
+  "completed_files": 0,
+  "failed_files": 0,
+  "status": "Running",
+  "created_at": "2025-08-17T02:57:19.303018600Z",
+  "updated_at": "2025-08-17T02:57:19.303018600Z"
+}

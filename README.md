@@ -1,24 +1,26 @@
 # 🎨 PaperCraft
 
-**A professional Markdown to PDF converter with beautiful themes and advanced configuration.**
+**A professional Markdown to PDF and DOCX converter with beautiful themes and advanced configuration.**
 
 [![Rust](https://img.shields.io/badge/rust-1.70+-orange.svg)](https://www.rust-lang.org)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
 
-PaperCraft transforms your Markdown documents into stunning PDF files with professional themes, advanced typography, and comprehensive customization options. Whether you're creating technical documentation, academic papers, or business reports, PaperCraft delivers publication-quality results.
+PaperCraft transforms your Markdown documents into stunning PDF files and professional DOCX documents with beautiful themes, advanced typography, and comprehensive customization options. Whether you're creating technical documentation, academic papers, or business reports, PaperCraft delivers publication-quality results in both formats.
 
 ## ✨ Features
 
 ### 🎯 **Core Functionality**
+- **Multi-Format Output**: Convert to both PDF and DOCX formats with a single tool
 - **High-Quality PDF Generation**: Professional output with precise typography
+- **DOCX Document Creation**: Industry-standard Microsoft Word compatible documents
 - **Zero Dependencies**: Automatically downloads Chrome Headless Shell - no manual setup required
 - **Beautiful Built-in Themes**: Academic, minimal, modern, dark, and default styles
-- **Custom Theme Support**: Create and use your own CSS themes
+- **Custom Theme Support**: Create and use your own CSS themes (PDF only)
 - **Advanced Typography**: Configurable fonts, sizes, and spacing
 - **Table of Contents**: Automatic generation with customizable styling
 - **Code Syntax Highlighting**: Over 100 programming languages supported
-- **Mathematical Expressions**: LaTeX math rendering support
+- **Mathematical Expressions**: LaTeX math rendering support (PDF only)
 - **Image Optimization**: Automatic resizing and compression
 
 ### 🚀 **Performance & Reliability**
@@ -37,6 +39,7 @@ PaperCraft transforms your Markdown documents into stunning PDF files with profe
 - **Batch Processing**: Convert entire directories
 - **Directory Watching**: Auto-regeneration on file changes
 - **Cross-Platform**: Windows, macOS, and Linux support
+- **Format Selection**: Choose between PDF and DOCX output
 
 ## 🚀 Quick Start
 
@@ -45,40 +48,59 @@ PaperCraft transforms your Markdown documents into stunning PDF files with profe
 1. **Download the latest release** from the releases page
 2. **Extract** the executable to your preferred location
 3. **Add to PATH** (optional but recommended)
-4. **That's it!** - Chrome Headless Shell downloads automatically on first use
+4. **That's it!** - Chrome Headless Shell downloads automatically on first use (PDF only)
 
 ### Basic Usage
 
 ```bash
-# Convert a single file
+# Convert to PDF (default)
 papercraft -i document.md -o document.pdf
 
-# Use a built-in theme
+# Convert to DOCX
+papercraft -i document.md -o document.docx --format docx
+
+# Use a built-in theme (PDF only)
 papercraft -i document.md -o document.pdf --theme modern
 
-# Batch convert a directory
+# Batch convert a directory to PDF
 papercraft -i docs/ -o pdfs/ --batch
+
+# Batch convert a directory to DOCX
+papercraft -i docs/ -o docx-files/ --batch --format docx
 
 # Interactive setup wizard
 papercraft --setup-wizard
 ```
 
-## 📖 Documentation
+## 📖 Output Formats
 
-- **[User Guide](USERGUIDE.md)** - Comprehensive usage guide
-- **[Configuration Reference](docs/configuration.md)** - All configuration options
-- **[Theme Development](docs/themes.md)** - Creating custom themes
-- **[CLI Reference](docs/cli.md)** - Complete command-line interface
+### PDF Output
+- **Chrome-based rendering** for pixel-perfect output
+- **Custom CSS themes** support
+- **Advanced typography** with web fonts
+- **Mathematical expressions** with LaTeX support
+- **Syntax highlighting** for code blocks
+- **Print-optimized** layouts
 
-## 🎨 Themes
+### DOCX Output
+- **Microsoft Word compatible** documents
+- **Structured formatting** with proper headings, paragraphs, and lists
+- **Text formatting** including bold, italic, strikethrough
+- **Code blocks** with monospace fonts
+- **Tables** converted to text representation
+- **Cross-platform compatibility** with all major word processors
 
-PaperCraft includes several professionally designed themes:
+## 🎨 Themes (PDF Only)
+
+PaperCraft includes several professionally designed themes for PDF output:
 
 - **Default** - Clean and versatile for any document type
 - **Academic** - Perfect for research papers and academic documents
 - **Modern** - Contemporary design with vibrant accents
 - **Minimal** - Clean and distraction-free layout
 - **Dark** - Dark theme for reduced eye strain
+
+*Note: DOCX output uses standard document formatting and doesn't support custom themes.*
 
 ## ⚙️ Configuration
 
@@ -93,8 +115,11 @@ papercraft --generate-config papercraft.toml
 ### Basic Configuration Example
 
 ```toml
+[output]
+format = "pdf"  # or "docx"
+
 [theme]
-built_in = "modern"
+built_in = "modern"  # PDF only
 
 [page]
 size = "A4"
@@ -111,26 +136,47 @@ title = "Table of Contents"
 
 [code]
 line_numbers = true
-highlight_theme = "Solarized (dark)"
+highlight_theme = "Solarized (dark)"  # PDF only
 ```
 
 ## 🔧 Advanced Features
 
-### Batch Processing with Concurrency
+### Multi-Format Batch Processing
 
 ```bash
-# Process multiple files concurrently
-papercraft -i docs/ -o output/ --batch --concurrent --jobs 4
+# Process directory to PDF
+papercraft -i docs/ -o pdf-output/ --batch --format pdf --concurrent
 
-# With progress tracking and validation
-papercraft -i docs/ -o output/ --batch --verbose --validate
+# Process directory to DOCX
+papercraft -i docs/ -o docx-output/ --batch --format docx --concurrent
+
+# Mixed processing with different themes
+papercraft -i docs/ -o styled-pdfs/ --batch --theme academic --format pdf
+```
+
+### Format-Specific Options
+
+```bash
+# PDF with advanced styling
+papercraft -i report.md -o report.pdf \
+  --theme modern \
+  --toc \
+  --line-numbers \
+  --optimize-images
+
+# DOCX with custom page settings
+papercraft -i report.md -o report.docx \
+  --format docx \
+  --paper-size A4 \
+  --margins "1in" \
+  --font-family "Times New Roman"
 ```
 
 ### Dry Run and Validation
 
 ```bash
 # Preview what will happen without converting
-papercraft -i docs/ -o output/ --dry-run --validate
+papercraft -i docs/ -o output/ --dry-run --validate --format docx
 
 # Show detailed validation results
 papercraft -i docs/ -o output/ --dry-run --show-validation-details
@@ -151,11 +197,14 @@ papercraft --resume job_1234567890
 ```bash
 # Auto-regenerate PDFs when markdown files change
 papercraft -i docs/ -o output/ --watch
+
+# Auto-regenerate DOCX files when markdown files change
+papercraft -i docs/ -o output/ --watch --format docx
 ```
 
 ## 📋 Examples
 
-### Technical Documentation
+### Technical Documentation (PDF)
 
 ```bash
 papercraft -i api-docs/ -o documentation.pdf \
@@ -166,7 +215,17 @@ papercraft -i api-docs/ -o documentation.pdf \
   --page-numbers
 ```
 
-### Academic Paper
+### Technical Documentation (DOCX)
+
+```bash
+papercraft -i api-docs/ -o documentation.docx \
+  --format docx \
+  --paper-size A4 \
+  --margins "1in" \
+  --font-family "Calibri"
+```
+
+### Academic Paper (PDF)
 
 ```bash
 papercraft -i research-paper.md -o paper.pdf \
@@ -179,29 +238,50 @@ papercraft -i research-paper.md -o paper.pdf \
   --bibliography
 ```
 
+### Academic Paper (DOCX)
+
+```bash
+papercraft -i research-paper.md -o paper.docx \
+  --format docx \
+  --paper-size A4 \
+  --margins "1in" \
+  --font-family "Times New Roman" \
+  --font-size "12pt"
+```
+
 ### Business Report
 
 ```bash
+# PDF version
 papercraft -i quarterly-report.md -o report.pdf \
   --theme modern \
   --header-template "<div>Quarterly Report Q4 2024</div>" \
   --footer-template "<div>Page {page} of {total}</div>" \
   --toc \
   --optimize-images
+
+# DOCX version
+papercraft -i quarterly-report.md -o report.docx \
+  --format docx \
+  --paper-size A4 \
+  --margins "1in"
 ```
 
 ## 🛟 Troubleshooting
 
 ### Common Issues
 
-**Issue**: First run takes longer than expected
+**Issue**: First PDF conversion takes longer than expected  
 **Solution**: Chrome Headless Shell (~50MB) downloads automatically on first use
 
-**Issue**: Large files cause memory errors
+**Issue**: Large files cause memory errors  
 **Solution**: Use `--max-memory` flag or enable image optimization
 
-**Issue**: Fonts not rendering correctly
+**Issue**: Fonts not rendering correctly in PDF  
 **Solution**: Ensure fonts are installed system-wide or use web fonts
+
+**Issue**: DOCX formatting appears as plain text  
+**Solution**: Ensure you're opening with Microsoft Word or compatible word processor
 
 ### Debug Mode
 
@@ -209,6 +289,7 @@ For detailed troubleshooting information:
 
 ```bash
 papercraft -i input.md -o output.pdf --debug --verbose
+papercraft -i input.md -o output.docx --format docx --debug --verbose
 ```
 
 ### Getting Help
@@ -240,7 +321,7 @@ cargo install --path .
 ### Dependencies
 
 - **Rust 1.70+** - Modern Rust toolchain (for building from source only)
-- **No runtime dependencies** - Chrome Headless Shell downloads automatically
+- **No runtime dependencies** - Chrome Headless Shell downloads automatically (PDF only)
 - **System fonts** - Optional, for enhanced typography support
 
 ## 📄 License
@@ -271,6 +352,7 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 
 - **Markdown Parsing**: [comrak](https://github.com/kivikakk/comrak)
 - **PDF Generation**: [headless_chrome](https://github.com/atroche/rust-headless-chrome)
+- **DOCX Generation**: [docx-rs](https://github.com/bokuweb/docx-rs)
 - **Syntax Highlighting**: [syntect](https://github.com/trishume/syntect)
 - **CLI Framework**: [clap](https://github.com/clap-rs/clap)
 
@@ -278,4 +360,4 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 
 **Made with ❤️ by the PaperCraft team**
 
-Transform your ideas into beautiful documents with PaperCraft! 🎨✨
+Transform your ideas into beautiful documents with PaperCraft! 🎨✨📄
