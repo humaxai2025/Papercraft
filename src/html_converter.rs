@@ -462,8 +462,8 @@ impl HtmlToPdfConverter {
             timeout_seconds += (content_size_kb / 100).min(10);
         }
         
-        // Clamp between 5 and 60 seconds
-        timeout_seconds = timeout_seconds.clamp(5, 60);
+        // Clamp between 5 and 120 seconds (increased for complex documents)
+        timeout_seconds = timeout_seconds.clamp(5, 120);
         
         std::time::Duration::from_secs(timeout_seconds as u64)
     }

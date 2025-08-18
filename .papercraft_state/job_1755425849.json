@@ -1,0 +1,37 @@
+{
+  "id": "job_1755425849",
+  "jobs": [
+    {
+      "id": "job_1755425849_0",
+      "input_path": ".\\paper\\README.md",
+      "output_path": ".\\paper\\README.pdf",
+      "status": "Pending",
+      "created_at": "2025-08-17T10:17:29.894915Z",
+      "updated_at": "2025-08-17T10:17:29.894915Z",
+      "progress": 0.0,
+      "error_message": null,
+      "config_hash": "config_hash_placeholder",
+      "estimated_duration_seconds": 10,
+      "actual_duration_seconds": null
+    },
+    {
+      "id": "job_1755425849_1",
+      "input_path": ".\\paper\\USERGUIDE.md",
+      "output_path": ".\\paper\\USERGUIDE.pdf",
+      "status": "Pending",
+      "created_at": "2025-08-17T10:17:29.894915Z",
+      "updated_at": "2025-08-17T10:17:29.894915Z",
+      "progress": 0.0,
+      "error_message": null,
+      "config_hash": "config_hash_placeholder",
+      "estimated_duration_seconds": 10,
+      "actual_duration_seconds": null
+    }
+  ],
+  "total_files": 2,
+  "completed_files": 0,
+  "failed_files": 0,
+  "status": "Running",
+  "created_at": "2025-08-17T10:17:29.894915Z",
+  "updated_at": "2025-08-17T10:17:29.894915Z"
+}
